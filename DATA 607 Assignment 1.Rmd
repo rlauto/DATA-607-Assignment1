@@ -1,0 +1,48 @@
+---
+title: "Data 607 Assignment 1"
+author: "Robert Lauto"
+date: "9/2/2018"
+output: html_document
+---
+
+Lets begin by pulling in the data from the UCI Repository and giving column names.
+
+```{r}
+mushdata <- read.csv(url('https://archive.ics.uci.edu/ml/machine-learning-databases/mushroom/agaricus-lepiota.data'))
+mushdf <- as.data.frame(mushdata)
+names(mushdf) = c('Edible', 'CapShape', 'CapSurface', 'CapColor', 'Bruises', 'Odor', 'GillAttachment', 'GillSpacing', 'GillSize', 'GillColor', 'StalkShape', 'StalkRoot', 'StalkSurfaceAR', 'StalkSurfaceBR', 'StalkColorAR', 'StalkColorBR', 'VeilType', 'VeilColor', 'RingNumber', 'RingType', 'SporePrintColor', 'population', 'habitat')
+head(mushdf)
+```
+Create a subset of the df that includes the column indicating edible or not as well as a few others.
+
+```{r}
+submush <- subset(mushdf, select = c(Edible, CapShape, StalkShape, GillAttachment, RingNumber))
+head(submush)
+```
+Replace abbreviations with their full text.
+```{r}
+library(magrittr)
+submush$Edible %<>%
+  gsub('^[e]$','Edible', .) %>% 
+  gsub('^[p]$','Poisonous', .)
+submush$CapShape %<>%
+  gsub('^[b]$','Bell', .) %>% 
+  gsub('^[c]$','Conical', .) %>% 
+  gsub('^[x]$','Convex', .) %>% 
+  gsub('^[f]$','Flat', .) %>% 
+  gsub('^[k]$','Knobbed', .) %>% 
+  gsub('^[s]$','Sunken', .)
+submush$StalkShape %<>%
+  gsub('^[e]$','Enlarging', .) %>% 
+  gsub('^[t]$','Tapering', .)
+submush$GillAttachment %<>%
+  gsub('^[a]$', 'Attached', .) %>% 
+  gsub('^[d]$','Descending',.) %>% 
+  gsub('^[f]$', 'Free',.) %>% 
+  gsub('^[n]$','Notched',.)
+submush$RingNumber %<>%
+  gsub('^[n]$','None',.) %>% 
+  gsub('^[o]$','One', .) %>% 
+  gsub('^[t]$','Two',.)
+head(submush)
+```
