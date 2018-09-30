@@ -1,0 +1,95 @@
+---
+title: "Week 5 Assignment"
+author: "Robert Lauto"
+date: "9/28/2018"
+output: html_document
+---
+
+# Week 5 Assignment
+## Tidying and Transforming Data
+
+### Getting Started
+I decided to create a MySQL db for this assignment to help myself get more familiar with connecting R to MySQL and creating MySQL databases.
+First thing I did was create a table in MySQL and insert the following data so that it resembled the table below.
+ 
+ Airline | Status  | Los Angeles | Phoenix | San Diego | San Francisco | Seattle
+--- | --- | --- | --- | --- | --- | ---
+ALASKA | on time | 497 | 221 | 212 | 503 | 1841
+ - | delayed | 62 | 12 | 20 | 102 | 305
+  |  |  |  |  |  |  
+AM WEST | on time | 694 | 4840 | 383 | 320 | 201
+ - | delayed | 117 | 415 | 65 | 129 | 61
+
+The table describes the arrival delays for two airlines at five airports located in the West United States, however, the data isn't organized perfectly to be analyzed. I will use dyplr and tidyr to transform the data to make analyzing it easier. Imagine a scenario where my supervisor tells me there will be lots of employees traveling over the course of the next year in the Western US and they are want to know which airline will be most reliable when it comes to arriving on time. Using the data provided we can create some barplots to help visualize the number of delays for each airline.
+```{r, eval = T}
+library(RMySQL)
+library(plyr)
+library(tidyr)
+library(dplyr)
+```
+
+```{r connect, echo = F, eval = T}
+mydb = dbConnect(MySQL(), user='root', password='rwl25574', dbname='assignment 6 flights', host='localhost')
+```
+Once connection is established with the MySQL DB I can then query the table and save it as a data frame.
+```{r query, eval = T}
+delays <- dbGetQuery(mydb, "SELECT *  FROM delays")
+delays <- as.data.frame(delays)
+delays
+```
+Summarizing the data confirms that there are NA's within the columns from the one blank row between the two airlines.
+```{r summary, eval = T}
+summary(delays)
+```
+Lets remove the ugly row of NA's out of the middle of our dataframe.
+```{r remove NAs, eval = T}
+delays <- delays %>% drop_na(Los_Angeles)
+delays
+```
+And fill the NA's below the airlines using `fill` from `tidyr`.
+```{r fill, eval = T}
+delays <- delays %>% fill(airline)
+```
+Now lets change to layout from wide to long using `gather` from `tidyr`.
+```{r long, eval = T}
+long <- delays %>%  gather(key=airport,value=count,3:7)
+long
+```
+Looking at out long dataframe, I would like to change the way it is assorted with `arrange`.
+```{r arrange, eval = T}
+long <- long %>% arrange(airline, status)
+long
+```
+Now  that we have tidied up the data a bit we can group the data in different ways to summarize it. I can group by airline and status to get the total number of delayed and on time flights for each airline. Then I can group by just the airline to get the total number of flights for each airline. I would like to calculate the proportion of on time and delayed flights for each airline so I then combine the two data frames.
+```{r groupby airline, eval = T}
+grpstatus <- long %>% group_by(airline, status) %>% summarise(total_count_by_airline_status = sum(count))
+grpstatus
+
+grpairlines <- long %>% group_by(airline) %>% summarise(total_count = sum(count))
+grpairlines
+
+combined <- rbind.fill(grpstatus,grpairlines)
+combined
+```
+This creates a dataframe with a bunch of NA's. To remove the NA's in the total_count column I assign the total count of flights for each airline to all rows where the airline name matches. I then remove the bottom two rows from the data frame.
+```{r cleaning df, eval=T}
+combined$total_count[combined$airline == 'ALASKA'] <- combined$total_count[combined$airline == 'ALASKA'] %>% tail(1)
+combined$total_count[combined$airline ==  'AM WEST'] <- combined$total_count[combined$airline == 'AM WEST'] %>% tail(1)
+combined <- combined[-c(5,6),]
+```
+I then can easily calculate the proportion of delayed and on time flights for both airlines. I then rearrange the data frame to sort by the status so that it will be easier to compare the airlines in the barplots.
+```{r calc and plot, eval = T}
+combined$prop <- combined$total_count_by_airline_status/combined$total_count
+paste(combined$airline, combined$status, sep = ' ')
+par(mar = c(10,4,4,2))
+combined <- combined %>% arrange(status)
+barplot(combined$total_count_by_airline_status,
+        names.arg = (paste(combined$airline, combined$status, sep = ' ')),
+        las = 2, main = 'Totals for each airline')
+barplot(combined$prop,
+        names.arg = (paste(combined$airline, combined$status, sep = ' ')),
+        las = 2, yaxp = c(0.0, 0.9,9),
+        main = 'Proportion of flights for each airline')
+```
+  
+In conclusion, the barplot of the totals for each ariline makes it seem as if AM WEST would be the clear choice to with because it has almost double the number of on time flights as ALASKA. However, looking at the porportion of flights that were delayed or on time for each airline shows that there was not much of a difference between the airlines. In this case I would select AM WEST airline for our office travel needs because it had nearly double the amount of flights as ALASKA and the greater number of flights might make it easier to select flight times when booking travel for meetings.
