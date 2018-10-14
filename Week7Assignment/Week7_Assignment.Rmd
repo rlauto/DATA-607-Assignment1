@@ -1,0 +1,55 @@
+---
+title: "Week 7 Assignment"
+author: "Robert Lauto"
+date: "10/14/2018"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+---
+
+## Assignment 7: Working with XML and JSON in R
+
+To help familiarize myself with the three different file formats I created a file of each type, all containing the same information about a few of my textbooks.
+
+```{r ,results="hide",warning=F}
+library(RCurl)
+library(XML)
+library(jsonlite)
+library(dplyr)
+library(knitr)
+```
+
+### Parsing HTML
+
+```{r html}
+html_URL <- getURL("https://raw.githubusercontent.com/rlauto/DATA-607-Assignments/master/Week7Assignment/books.html")
+books_html <- readHTMLTable(html_URL, header = T)
+books_html_df <- data.frame(books_html$MSDS_Books)
+kable(books_html_df)
+books_html_df
+```
+    
+### Parsing JSON
+```{r json}
+json_URL <- getURL("https://raw.githubusercontent.com/rlauto/DATA-607-Assignments/master/Week7Assignment/books.json")
+books_json <- fromJSON(json_URL)
+books_json_df <- data.frame(books_json$`MSDS Books`)
+kable(books_json_df)
+books_json_df
+```
+  
+### Parsing XML
+```{r xml}
+xml_url <- getURL("https://raw.githubusercontent.com/rlauto/DATA-607-Assignments/master/Week7Assignment/books.xml")
+books_xml <- xmlParse(xml_url)
+books_xml_rt <- xmlRoot(books_xml)
+books_xml_df <- xmlToDataFrame(books_xml_rt)
+kable(books_xml_df)
+books_xml_df
+```
+  
+## Conclusion:
+In conclusion I found a couple differences between the way the dataframe was created for each of the data file types. For both HTML and JSON file types I noticed that the hyphen was removed from the vairable name ISBN-10 and replaced with a decimal. While the dataframes mostly look the same other than that small difference, I also found that the JSON data frame was able to determine the difference between int and chartacter data types, meanwhile the html and XML data frames made all data types factors. Although I believe it is possible that result can be attributed to the way I formated the raw data files.
+
