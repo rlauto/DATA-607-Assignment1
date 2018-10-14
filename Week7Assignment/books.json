@@ -1,7 +1,10 @@
 {"MSDS Books": [
     {
     "Title": "Automated Data Collection with R: A Practical Guide to Web Scraping and Text Mining",
-    "Author": ["Simon Munzert", "Christian Rubba", "Peter Meissner", "Dominic Nyhuis"],
+    "Author.1": "Simon Munzert",
+    "Author.2": "Christian Rubba",
+    "Author.3": "Peter Meissner",
+    "Author.4": "Dominic Nyhuis",
     "Year_Published": 2015,
     "Publisher": "Wiley",
     "Pages": 474,
@@ -9,7 +12,10 @@
     },
     {
     "Title": "Data Science for Business: What You Need to Know about Data Mining and Data-Analytic Thinking",
-    "Author": ["Foster Provost", "Tom Fawcett"],
+    "Author.1": "Foster Provost", 
+    "Author.2": "Tom Fawcett",
+    "Author.3": ,
+    "Author.4": ,
     "Year_Published": 2013,
     "Publisher": "O'Reilly Media",
     "Pages": 414,
@@ -17,7 +23,10 @@
     },
     {
     "Title": "OpenIntro Statistics",
-    "Author": ["David M Diez", "Christopher D Barr", "Mine Cetinkaya-Rundel"],
+    "Author.1": "David M Diez",
+    "Author.2": "Christopher D Barr",
+    "Author.3": "Mine Cetinkaya-Rundel",
+    "Author.4": ,
     "Year_Published": 2015,
     "Publisher": "OpenIntro, Inc.",
     "Pages": 436,
