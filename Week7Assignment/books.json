@@ -1,7 +1,7 @@
 {"MSDS Books": [
     {
     "Title": "Automated Data Collection with R: A Practical Guide to Web Scraping and Text Mining",
-    "Author": ["Simon Munzert", "Christian Rubba", "Peter Meißner", "Dominic Nyhuis"]
+    "Author": ["Simon Munzert", "Christian Rubba", "Peter Meissner", "Dominic Nyhuis"]
     "Year Published": 2015,
     "Publisher": "Wiley",
     "Pages": 474,
@@ -17,7 +17,7 @@
     },
     {
     "Title": "OpenIntro Statistics",
-    "Author": ["David M Diez", "Christopher D Barr", "David M Diez"],
+    "Author": ["David M Diez", "Christopher D Barr", "Mine Cetinkaya-Rundel"],
     "Year Published": 2015,
     "Publisher": "OpenIntro, Inc.",
     "Pages": 436,
