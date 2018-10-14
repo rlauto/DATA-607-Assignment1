@@ -2,7 +2,7 @@
     {
     "Title": "Automated Data Collection with R: A Practical Guide to Web Scraping and Text Mining",
     "Author": ["Simon Munzert", "Christian Rubba", "Peter Meissner", "Dominic Nyhuis"],
-    "Year Published": 2015,
+    "Year_Published": 2015,
     "Publisher": "Wiley",
     "Pages": 474,
     "ISBN-10": "111883481X"
@@ -10,7 +10,7 @@
     {
     "Title": "Data Science for Business: What You Need to Know about Data Mining and Data-Analytic Thinking",
     "Author": ["Foster Provost", "Tom Fawcett"],
-    "Year Published": 2013,
+    "Year_Published": 2013,
     "Publisher": "O'Reilly Media",
     "Pages": 414,
     "ISBN-10": 9781449361327
@@ -18,7 +18,7 @@
     {
     "Title": "OpenIntro Statistics",
     "Author": ["David M Diez", "Christopher D Barr", "Mine Cetinkaya-Rundel"],
-    "Year Published": 2015,
+    "Year_Published": 2015,
     "Publisher": "OpenIntro, Inc.",
     "Pages": 436,
     "ISBN-10": 1943450056
