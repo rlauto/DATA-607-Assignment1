@@ -1,7 +1,7 @@
 {"MSDS Books": [
     {
     "Title": "Automated Data Collection with R: A Practical Guide to Web Scraping and Text Mining",
-    "Author": ["Simon Munzert", "Christian Rubba", "Peter Meissner", "Dominic Nyhuis"]
+    "Author": ["Simon Munzert", "Christian Rubba", "Peter Meissner", "Dominic Nyhuis"],
     "Year Published": 2015,
     "Publisher": "Wiley",
     "Pages": 474,
@@ -9,7 +9,7 @@
     },
     {
     "Title": "Data Science for Business: What You Need to Know about Data Mining and Data-Analytic Thinking",
-    "Author": ["Foster Provost", "Tom Fawcett"]
+    "Author": ["Foster Provost", "Tom Fawcett"],
     "Year Published": 2013,
     "Publisher": "O'Reilly Media",
     "Pages": 414,
