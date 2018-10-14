@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MSDS_Books>
+    <Book>
+        <Title>Automated Data Collection with R: A Practical Guide to Web Scraping and Text Mining</Title>
+        <Author>Simon Munzert</Author>
+        <Author>Christian Rubba</Author>
+        <Author>Peter Meißner</Author>
+        <Author>Dominic Nyhuis</Author>
+        <Year_Published>2015</Year_Published>
+        <Publisher>Wiley</Publisher>
+        <Pages>474</Pages>
+        <ISBN-10>111883481X</ISBN-10>
+    </Book>
+    <Book>
+        <Title>Data Science for Business: What You Need to Know about Data Mining and Data-Analytic Thinking</Title>
+        <Author>Foster Provost</Author>
+        <Author>Tom Fawcett</Author>
+        <Author />
+        <Author />
+        <Year_Published>2013</Year_Published>
+        <Publisher>O'Reilly Media</Publisher>
+        <Pages>414</Pages>
+        <ISBN-10>9781449361327</ISBN-10>
+    </Book>
+    <Book>
+        <Title>OpenIntro Statistics</Title>
+        <Author>David M Diez</Author>
+        <Author>Christopher D Barr</Author>
+        <Author>Mine Çetinkaya-Rundel</Author>
+        <Author />
+        <Year_Published>2015</Year_Published>
+        <Publisher>OpenIntro, Inc.</Publisher>
+        <Pages>436</Pages>
+		<ISBN-10>9781449361327</ISBN-10>
+    </Book>
+</MSDS_Books>
