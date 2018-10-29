@@ -1,0 +1,27 @@
+---
+title: "DATA 607 Week 9 Assignment"
+author: "Robert Lauto"
+date: "10/28/2018"
+output: html_document
+---
+
+# Connnecting to NYTs API
+Setting the API
+```{r}
+library(jsonlite)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+
+```
+
+```{r}
+term <- 'Yankees'
+begin <- '20180901'
+end <- '20181028'
+df <- fromJSON(paste0('http://api.nytimes.com/svc/search/v2/articlesearch.json?q=',term,'&begin_date=',begin,'&end_date=',end,'&facet_filter=true&api-key=',Sys.getenv('NYT_KEY')), flatten = TRUE) %>% 
+  data.frame()
+kable(tbl_df(df)) %>% 
+ kable_styling(bootstrap_options = c('striped','hover','responsive', 'condensed', full_width = F)) %>% 
+  scroll_box(width = '100%')
+```
