@@ -1,0 +1,101 @@
+---
+title: "Data 607 Week 12 Assignment"
+author: "Robert Lauto"
+date: "11/25/2018"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(mongolite)
+library(RMySQL)
+```
+# Migrating from RDB to MongoDB
+
+The task of moving data can sometimes be daunting but with the help of R and packages like mongolite and RMySQL it is fairly easy.
+
+## Creating collection in Mongo db 'flights' and creating connection
+```{r Mongo conn, eval=T}
+# creating collection in mongo flights db and connecting to it
+airlines_col <- mongo(collection = 'airlines',
+                      db = 'flights',
+                      url = 'mongodb://localhost')
+
+airports_col <- mongo(collection = 'airports',
+                      db = 'flights',
+                      url = 'mongodb://localhost')
+
+flights_col <- mongo(collection = 'flights',
+                      db = 'flights',
+                      url = 'mongodb://localhost')
+
+planes_col <- mongo(collection = 'planes',
+                      db = 'flights',
+                      url = 'mongodb://localhost')
+
+weather_col <- mongo(collection = 'weather',
+                      db = 'flights',
+                      url = 'mongodb://localhost')
+```
+## Connect to MySQL
+```{r connecting to MySQL, eval = T}
+# connecting to MySQL flights db
+flights_sql <- dbConnect(MySQL(), user='root', password='root12345', dbname='flights', host='localhost')
+
+# getting dataframes from all tables flights db
+airlines <- dbGetQuery(flights_sql, 'SELECT * FROM airlines')
+airports <- dbGetQuery(flights_sql, 'SELECT * FROM airports')
+flights <- dbGetQuery(flights_sql, 'SELECT * FROM flights')
+planes <- dbGetQuery(flights_sql, 'SELECT * FROM planes')
+weather <- dbGetQuery(flights_sql, 'SELECT * FROM weather')
+```
+Some quick tidying to remove new line character '\r'
+```{r Tidying, eval = T}
+# remove "\r" from end of line in airlines data frame
+airlines$name <- sub('\r$','',airlines$name)
+```
+## Inserting the tables from MySQL to the Mongo collections
+```{r insert, eval = T}
+# insert tables into collections, dropping anything in the collection first
+airlines_col$drop()
+airlines_col$insert(airlines)
+
+airports_col$drop()
+airports_col$insert(airports)
+
+flights_col$drop()
+flights_col$insert(flights)
+
+planes_col$drop()
+planes_col$insert(planes)
+
+weather_col$drop()
+weather_col$insert(weather)
+```
+## Quick check to make sure all of the data is now store in the collections
+```{r check, eval = T}
+# checking that the collections now match the MySQL tables
+airlines_col$count('{}') == nrow(airlines)
+
+airports_col$count('{}') == nrow(airports)
+
+flights_col$count('{}') == nrow(flights)
+
+planes_col$count('{}') == nrow(planes)
+
+weather_col$count('{}') == nrow(weather)
+```
+# Conclusion
+- Storing data in relational databases, like MySQL, are useful for structured relational data, ensuring data integrity.
+- However, NoSQL databases like MongoDB increase felxiblilty in database structure and is more easily scaled
+- Once connections are established, the insertion of a table from MySQL to MongoDB collection can be done with one line like below:
+```{r drop, eval=T, include=F}
+airports_col$drop()
+```
+```{r one line, eval = T}
+airports_col$insert(dbGetQuery(flights_sql, 'SELECT * FROM airports'))
+```
